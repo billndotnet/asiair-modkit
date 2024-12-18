@@ -1,0 +1,18 @@
+jailbreak kit - billndotnet
+
+Scripts and files in this directory are used to facilitate minor configuration and package installation
+for enabling or adding services to the unit. Do not run these unless you understand their function and are willing to accept the consequences for their 
+misuse.
+
+mount-rw.sh - Unlocks the core operating system partition from read-only mode to allow us to make changes. 
+mount-ro.sh - Re-locks the core operating system partition to protect it from corruption due to surprise power-off conditions
+
+enable-ssh-auth.sh - Modifies the SSH server configuration to permit password and ssh key authentication.
+
+install-sftp-server.sh - Installs the SFTP service module for the ssh server to enable use of SFTP.
+
+setup-package-install.sh - Does a quick backup and swap of these files to enable package installation from the rasbian package servers
+- resolv.conf - Drop in replacement for the DNS resolver configuration to allow external lookups of hosts, needed for package installation
+- sources.list - Switches the package sources to a domestic US server instead of the Chinese package mirror
+
+backup/ - Directory to hold backups of changed files, just in case
