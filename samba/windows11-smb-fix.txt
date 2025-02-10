@@ -1,0 +1,67 @@
+### Resolving Samba Access Issues on Windows 11 After Update 24H2
+
+#### **Context**
+A recent Windows 11 update (version 24H2) introduced stricter security measures for SMB (Server Message Block) connections, which are used to access shared files and folders on devices like NAS (Network-Attached Storage) or Linux-based Samba servers. These new measures enforce SMB signing and disable access to devices that don't meet the updated security standards. If your device uses older, less secure SMB configurations, you may find that you can no longer connect to it.
+
+The following steps adjust Windows settings to temporarily bypass these new security requirements, allowing access to older or less secure devices.
+
+---
+
+### **Commands to Fix Samba Access Issues**
+
+#### **1. Enable Insecure Guest Authentication**
+```powershell
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\LanmanWorkstation" -Name "AllowInsecureGuestAuth" -Value 1 -Type DWord
+```
+**What it does**:  
+This command updates a Windows system setting to allow "insecure guest authentication" for SMB connections. Many older Samba servers or NAS devices don't use advanced authentication methods (like passwords or encryption). Instead, they rely on insecure "guest access." By setting the `AllowInsecureGuestAuth` value to `1`, this command tells Windows it's okay to connect to devices that use guest access without requiring encryption or signing.
+
+**Why it’s needed**:  
+Without this change, Windows 11 blocks connections to devices that rely on insecure guest authentication, causing them to appear unavailable.
+
+---
+
+#### **2. Force Windows to Apply the Policy Change**
+```powershell
+gpupdate /force
+```
+**What it does**:  
+This command forces Windows to immediately refresh its Group Policy settings. Group Policy is a system for managing Windows settings, and by running `gpupdate /force`, we ensure the change made in the first command takes effect right away, without needing to restart your computer.
+
+**Why it’s needed**:  
+Without running this command, the system might not apply the new `AllowInsecureGuestAuth` setting until the next scheduled policy refresh or restart, delaying the fix.
+
+---
+
+#### **3. Disable SMB Signing Requirement**
+```powershell
+Set-SmbClientConfiguration -RequireSecuritySignature $false
+```
+**What it does**:  
+This command modifies the SMB client settings to disable the requirement for "security signatures" in SMB connections. Security signatures are used to verify the authenticity and integrity of data sent between your computer and the SMB server. However, some older or simpler SMB servers (like those in basic NAS devices) don't support this feature.
+
+**Why it’s needed**:  
+Disabling the requirement for SMB signing allows your computer to connect to servers that don’t support it, resolving connectivity issues caused by the Windows 11 update.
+
+---
+
+### **Important Notes**
+
+#### **1. Security Considerations**:
+- These changes reduce the security of SMB connections, making them vulnerable to attacks if your network isn’t secure (e.g., if you’re connected to a public Wi-Fi or your home network is poorly configured).
+- It’s recommended to apply these changes only if necessary and consider upgrading your NAS or Samba server to support modern SMB protocols.
+
+#### **2. Temporary Fix**:
+- Microsoft implemented these changes to improve security. While the commands above will restore functionality, you should plan to update your NAS or server to support SMB signing and encryption if possible.
+
+#### **3. How to Reverse the Changes**:
+To restore the default, more secure settings, run:
+```powershell
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\LanmanWorkstation" -Name "AllowInsecureGuestAuth" -Value 0 -Type DWord
+Set-SmbClientConfiguration -RequireSecuritySignature $true
+gpupdate /force
+```
+
+By running these commands, your Windows computer will be able to connect to older devices using SMB, but keep in mind the potential risks and consider a more secure long-term solution.
+
+
