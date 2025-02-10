@@ -7,15 +7,21 @@ are willing to accept the consequences for their misuse.
 This repository does not contain the jailbreak function itself, just tools to facilitate the process and 
 standardize administrative functions in an open manner.
 
-mount-rw.sh - Unlocks the core operating system partition from read-only mode to allow us to make changes. 
-mount-ro.sh - Re-locks the core operating system partition to protect it from corruption due to surprise power-off conditions
+os-administration/:
+ mount-rw.sh - Unlocks the core operating system partition from read-only mode to allow us to make changes. 
+ mount-ro.sh - Re-locks the core operating system partition to protect it from corruption due to surprise power-off conditions
 
-enable-ssh-auth.sh - Modifies the SSH server configuration to permit password and ssh key authentication.
+ enable-ssh-auth.sh - Modifies the SSH server configuration to permit password and ssh key authentication.
 
-install-sftp-server.sh - Installs the SFTP service module for the ssh server to enable use of SFTP.
+ install-sftp-server.sh - Installs the SFTP service module for the ssh server to enable use of SFTP.
 
-setup-package-install.sh - Does a quick backup and swap of these files to enable package installation from the rasbian package servers
-- resolv.conf - Drop in replacement for the DNS resolver configuration to allow external lookups of hosts, needed for package installation
-- sources.list - Switches the package sources to a domestic US server instead of the Chinese package mirror because latency
+ setup-package-install.sh - Does a quick backup and swap of these files to enable package installation from the rasbian package servers
+ - resolv.conf - Drop in replacement for the DNS resolver configuration to allow external lookups of hosts, needed for package installation
+ - sources.list - Switches the package sources to a domestic US server instead of the Chinese package mirror because latency
+
+tools/
+ usbreset.py - Enumerates and optionally resets a USB device.
+ adduser.sh - Adds a new user and sets their password
+ chpasswd.sh - Sets a new password for a user
 
 backup/ - Directory to hold backups of changed files, just in case

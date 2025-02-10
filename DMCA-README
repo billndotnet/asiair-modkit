@@ -1,0 +1,117 @@
+# README / Project Disclaimer
+
+## Purpose of This Repository
+
+This project provides **guides, scripts, and tools** to help **ASIair** (and related/derived ZWO products) owners in the United States:
+
+1. **Restore Interoperability** for third-party accessories (e.g., cameras, focusers, filter wheels, rotators, LCD panels) that are deliberately locked out by ZWO’s modified INDI server, which is licensed under LGPLv2.
+2. **Migrate/Upgrade Hardware**, such as using a more powerful Raspberry Pi/ARM-compatible board, by bypassing validation checks that restrict CPU swaps.
+3. **Maintain Security**, by updating out-of-date services (like Samba 4.9.5) and patching vulnerabilities in the underlying Linux OS. Aspects of the ASIair's basic design may expose users operating this platform in shared colocation or remote operating environments to additional risks.
+4. **Enhance Features** based on user requirements that differ from ZWO's original design constraints.
+
+We do **not** distribute proprietary keys or promote piracy. These materials assist lawful device owners in **repairing**, **improving**, and **extending** the functionality of hardware they already own—especially where vendor modifications conflict with open-source license obligations, undermine interoperability, or restrict user choice to proprietary solutions when third-party options are available.
+
+---
+
+## Background on ZWO & GPL Violations
+
+### 1. Modified INDI Server (LGPLv2)
+
+- **INDI** (Instrument-Neutral Distributed Interface) is an LGPLv2-licensed system designed to facilitate maximum hardware compatibility across astronomy vendors.
+- ZWO’s **ASIair** firmware deliberately **blocks** drivers for non-ZWO accessories, contradicting INDI’s open-ended driver structure.
+- For teardown details, visit:
+  [https://www.indilib.org/forum/development/10380-asiair-and-opensource-software-licences.html?start=12](https://www.indilib.org/forum/development/10380-asiair-and-opensource-software-licences.html?start=12)
+
+### 2. Additional GPL/AGPL Taint & Non-Compliance
+
+- **zwoasi\_imager** links proprietary device libraries **alongside** GPL2/GPL3 code (e.g., WCSLIB, GSL, Astrometry.net, Siril, libijkffmpeg).
+- ZWO **admits via email** that they refuse to release the full source (including build scripts) due to proprietary libraries—despite GPL requirements.
+- While ZWO published a partial `astrometry.net` source after a non-compliance notice, **other GPL-covered components** remain unavailable in source form.
+
+### 3. Seestar & Ultralytics YOLOv5 Code
+
+- ZWO has released newer products (ASIair Pro, Plus, Mini, **Seestar**) built on the same codebase, with the Seestar adding additional GPL-covered material from **Ultralytics** (YOLOv5).
+- In a three-way email exchange with Ultralytics and ZWO, ZWO did not respond; instead, they **renamed** the infringing RKNN model to hide its YOLOv5 origin. However, **md5sum** checks confirm it’s still the same code.
+
+### 4. AGPL Taint
+
+- The **ASIair tablet applications** incorporate **Stellarium Web Engine** (AGPL3.0), which obligates a **complete** source release due to AGPL’s network-related provisions. No corresponding repos have been published.
+
+> **Note**: Even if ZWO eventually replaces these libraries to address GPL concerns, **all prior distributions** remain subject to GPL2 and AGPL obligations.
+
+---
+
+## DMCA & License Context
+
+1. **Open-Source (Copyleft) Licenses**
+
+   - Code provided as open-source under GPL, LGPL, and AGPL licenses grant end-users broad rights to modify and run software on hardware of their choice.
+   - Incorporating GPL-covered code in your projects obligates you to open source the entire codebase if you choose to distribute in, including in a product.
+   - ZWO’s refusal to release source code, despite using copyleft components, constitutes an **ongoing violation** of these licenses.
+   - The underlying premise of the GPL license is 'share and share alike.' By refusing to release their source, while benefiting from the open source community, ZWO gives nothing back to the communities they profit from. Despite their public statements that they 'strictly follow the open source protocols', ZWO's very limited source releases to date have been described 'malicious compliance', a limited effort for optics, but lacking in substance.
+
+2. **Relevant Case Law: SFC v. Vizio (2021)**
+
+   - The Software Freedom Conservancy (SFC) sued Vizio over GPL violations in its SmartCast TVs, arguing that **end users** are intended third-party beneficiaries with direct rights to demand source code.
+   - While the case ultimately settled, it underscored that **consumers can have standing** to enforce open-source licenses, reinforcing that GPL compliance is not optional for consumer electronics.
+
+3. **Right to Repair & Magnuson-Moss Warranty Act (MMWA)**
+
+   - The MMWA (15 U.S.C. § 2301 et seq.) generally prohibits conditioning a product warranty on using a manufacturer’s own parts/services unless provided free or falling under narrow exceptions.
+   - "Right to repair" advocates highlight MMWA’s anti–tie-in provisions as supporting consumers’ freedom to repair or modify devices—especially if a vendor tries to void warranties over hardware upgrades or third-party accessories.
+   - Technical locks preventing modifications may conflict with GPL obligations and raise MMWA questions if used as a warranty restriction.
+
+4. **DMCA 1201 (U.S. Anti-Circumvention) & Library of Congress Exemptions**
+
+   - 17 U.S.C. § 1201 generally prohibits bypassing TPMs, but **triennial exemptions** under § 1201(a)(1)(C) permit specific lawful circumventions.
+   - **Repair & Maintenance Exemption**: Current exemptions (37 C.F.R. § 201.40) allow owners of certain consumer devices (like smartphones, tablets, smart TVs, routers, etc.) to circumvent TPMs for diagnosis, maintenance, or repair. This includes upgrading or modifying software on a lawfully owned device.
+   - **Interoperability Exemption**: Additional exemptions permit circumvention to achieve interoperability with independently created programs (e.g., adding drivers for non-ZWO accessories).
+   - These tools address **legitimate** maintenance and interoperability, not pirating copyrighted content.
+   - Refer to the **latest** Library of Congress rulemaking (2021 as of writing) for precise exemption scopes.
+
+5. **DMCA 512(f) (Misrepresentation)**
+
+   - A DMCA takedown notice must be filed **in good faith**, under penalty of perjury.
+   - Public records, including lists of open source libraries within the ASIair application, as well as direct email correspondence, show ZWO is **aware** of GPL mixing but refuses source release. Filing a takedown against anything in this repository, while denying GPL obligations, could be deemed a material misrepresentation.
+
+---
+
+## Intended Use & Audience
+
+- **Legitimate Owners Only**: These guides are for individuals who **legally purchased** an ASIair or derivative product from Suzhou ZWO Co., Ltd. or its authorized resellers.
+- **Repair, Interoperability, Security**: Our goal is to **restore** the open, modular nature of INDI, enable hardware upgrades, and patch security flaws—aligned with open-source principles and recognized DMCA exemptions.
+
+---
+
+## Disclaimers
+
+1. **No Warranty**
+
+   - All information is provided **“as is.”** We make **no guarantees** regarding suitability for any purpose. Users assume all risks from applying these modifications.
+
+2. **No Distribution of Proprietary Keys**
+
+   - This repository does **not** distribute proprietary keys, binaries, or ZWO trade secrets. We focus on **repair, interoperability, and open-source compliance**.
+
+3. **Legal Responsibility**
+
+   - Users must follow **all applicable laws** and regulations. Consult an attorney if unsure, especially one knowledgeable in **open-source licensing** and **DMCA exemptions**.
+
+4. **Ongoing GPL Violations**
+
+   - If you believe your rights under GPL, LGPL, or AGPL are infringed, consider contacting the [Software Freedom Conservancy](https://sfconservancy.org/) or the [Free Software Foundation](https://www.fsf.org/).
+   - We urge ZWO to **rectify** these violations by publishing complete source code—including build scripts—for each GPL/AGPL-covered component.
+
+---
+
+## Note to Corporate Counsel (ZWO, GitHub, etc.)
+
+- There is ample evidence, including **email confirmations** of source-code refusal, teardowns of firmware updates and forensic examination of rooted devices, that show **ZWO’s awareness** of copyleft obligations. Contact the repository owner for copies.
+- Filing a DMCA takedown under **17 U.S.C. § 512** while aware of **non-compliance** or claiming exclusive rights over GPL-covered code could expose the filer to **512(f)** liability for misrepresentation.
+- Our project’s aim is to enable **lawful end-user freedom** under open-source licenses, **not** to pirate proprietary code or distribute stolen IP.
+
+---
+
+**Disclaimer**: This document is **not** legal advice. For exact guidance on GPL, LGPL, AGPL, or DMCA compliance, consult a qualified attorney.
+
+
