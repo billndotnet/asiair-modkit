@@ -25,3 +25,10 @@ tools/
  chpasswd.sh - Sets a new password for a user
 
 backup/ - Directory to hold backups of changed files, just in case
+
+dropbox_service/
+ A small Flask web service for Dropbox uploads.
+ Install requirements with `pip install -r requirements.txt`.
+ Set `DROPBOX_APP_KEY` and `DROPBOX_APP_SECRET` environment variables.
+ Run `python app.py` and visit `http://<device>:8080` to connect your Dropbox
+ account and toggle monitoring of `/mnt/asiair` for automatic uploads.
