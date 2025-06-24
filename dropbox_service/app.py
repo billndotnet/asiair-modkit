@@ -11,6 +11,8 @@ DEFAULT_CONFIG = {
     'MONITORED_DIR': '/mnt/asiair',
     'PORT': '8080',
     'SECRET_KEY': 'change-me',
+    'DROPBOX_APP_KEY': '',
+    'DROPBOX_APP_SECRET': '',
 }
 
 def load_config():
@@ -81,6 +83,7 @@ def index():
     return render_template_string(
         """
         <h1>Dropbox Uploader</h1>
+        <p><a href='{{ url_for('settings') }}'>Settings</a></p>
         {% if not authorized %}
             <a href='{{ url_for('login') }}'>Connect to Dropbox</a>
         {% else %}
@@ -94,11 +97,40 @@ def index():
         monitoring=monitoring,
     )
 
+
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
+    message = ''
+    if request.method == 'POST':
+        for key in ['MONITORED_DIR', 'DROPBOX_APP_KEY', 'DROPBOX_APP_SECRET', 'PORT']:
+            if key in request.form:
+                config[key] = request.form[key]
+        save_config(config)
+        global MONITORED_DIR
+        MONITORED_DIR = config.get('MONITORED_DIR')
+        message = 'Saved. Restart service if port or secret key changed.'
+    return render_template_string(
+        """
+        <h1>Settings</h1>
+        <form method='post'>
+            <label>Monitored Directory: <input name='MONITORED_DIR' value='{{ cfg.MONITORED_DIR }}'></label><br>
+            <label>Dropbox App Key: <input name='DROPBOX_APP_KEY' value='{{ cfg.DROPBOX_APP_KEY }}'></label><br>
+            <label>Dropbox App Secret: <input name='DROPBOX_APP_SECRET' value='{{ cfg.DROPBOX_APP_SECRET }}'></label><br>
+            <label>Port: <input name='PORT' value='{{ cfg.PORT }}'></label><br>
+            <button type='submit'>Save</button>
+        </form>
+        <p>{{ message }}</p>
+        <p><a href='{{ url_for('index') }}'>Back</a></p>
+        """,
+        cfg=config,
+        message=message,
+    )
+
 @app.route('/login')
 def login():
     auth_flow = dropbox.oauth.DropboxOAuth2Flow(
-        os.environ.get('DROPBOX_APP_KEY'),
-        os.environ.get('DROPBOX_APP_SECRET'),
+        config.get('DROPBOX_APP_KEY') or os.environ.get('DROPBOX_APP_KEY'),
+        config.get('DROPBOX_APP_SECRET') or os.environ.get('DROPBOX_APP_SECRET'),
         url_for('oauth_callback', _external=True),
         session,
         'dropbox-auth-csrf-token',

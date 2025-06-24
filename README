@@ -29,13 +29,9 @@ backup/ - Directory to hold backups of changed files, just in case
 dropbox_service/
  A small Flask web service for Dropbox uploads.
  Install requirements with `pip install -r requirements.txt`.
- Set `DROPBOX_APP_KEY` and `DROPBOX_APP_SECRET` environment variables.
- Adjust settings in `~/.dropbox_service.conf` (created on first run):
- ````
- # Example configuration
- MONITORED_DIR=/mnt/asiair
- PORT=8080
- SECRET_KEY=change-me
- ````
- Run `python app.py` and visit `http://<device>:<PORT>` to connect your
- Dropbox account and toggle monitoring of the directory for automatic uploads.
+ Run `python app.py` and visit `http://<device>:<PORT>` (default 8080).
+ Open the **Settings** page to enter your Dropbox App Key and Secret and
+ adjust the monitored directory or port. The configuration is saved to
+ `~/.dropbox_service.conf` for next time.
+ Then connect your Dropbox account from the main page and start monitoring
+ to automatically upload new files.
