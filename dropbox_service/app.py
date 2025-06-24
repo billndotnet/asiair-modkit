@@ -1,6 +1,4 @@
-import json
 import os
-import threading
 from functools import wraps
 
 from flask import Flask, redirect, request, session, url_for, render_template_string
@@ -8,23 +6,40 @@ import dropbox
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-app = Flask(__name__)
-app.secret_key = 'change-me'
-
-CONFIG_PATH = os.path.expanduser('~/.dropbox_service_config.json')
-MONITORED_DIR = '/mnt/asiair'
+CONFIG_PATH = os.path.expanduser('~/.dropbox_service.conf')
+DEFAULT_CONFIG = {
+    'MONITORED_DIR': '/mnt/asiair',
+    'PORT': '8080',
+    'SECRET_KEY': 'change-me',
+}
 
 def load_config():
+    config = DEFAULT_CONFIG.copy()
     if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, 'r') as f:
-            return json.load(f)
-    return {}
+        with open(CONFIG_PATH) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    k, v = line.split('=', 1)
+                    config[k.strip()] = v.strip()
+    else:
+        with open(CONFIG_PATH, 'w') as f:
+            for k, v in config.items():
+                f.write(f"{k}={v}\n")
+    return config
 
-def save_config(data):
+def save_config(cfg):
     with open(CONFIG_PATH, 'w') as f:
-        json.dump(data, f)
+        for k, v in cfg.items():
+            f.write(f"{k}={v}\n")
 
 config = load_config()
+
+app = Flask(__name__)
+app.secret_key = config.get('SECRET_KEY', 'change-me')
+MONITORED_DIR = config.get('MONITORED_DIR', '/mnt/asiair')
 
 
 def requires_token(f):
@@ -119,4 +134,4 @@ def toggle():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=int(config.get('PORT', '8080')))

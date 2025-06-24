@@ -30,5 +30,12 @@ dropbox_service/
  A small Flask web service for Dropbox uploads.
  Install requirements with `pip install -r requirements.txt`.
  Set `DROPBOX_APP_KEY` and `DROPBOX_APP_SECRET` environment variables.
- Run `python app.py` and visit `http://<device>:8080` to connect your Dropbox
- account and toggle monitoring of `/mnt/asiair` for automatic uploads.
+ Adjust settings in `~/.dropbox_service.conf` (created on first run):
+ ````
+ # Example configuration
+ MONITORED_DIR=/mnt/asiair
+ PORT=8080
+ SECRET_KEY=change-me
+ ````
+ Run `python app.py` and visit `http://<device>:<PORT>` to connect your
+ Dropbox account and toggle monitoring of the directory for automatic uploads.
